@@ -1,0 +1,141 @@
+version: "2.0"
+
+stories:
+
+- story: happy path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: utter_happy
+  - intent: goodbye 
+  - action: utter_goodbye
+
+- story: sad path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+
+- story: sad path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: deny
+  - action: utter_goodbye
+
+- story: order pizza 
+  steps:
+  - intent: greet
+  - action: utter_greet 
+  - intent: order_pizza 
+  - action: pizza_form
+  - slot_was_set:
+    - topping: pepperoni
+    - size: large
+  - action: utter_confirm_pizza_order
+  - intent: affirm
+  - action: action_flush_slots
+  - action: utter_pizza_order
+
+- story: order pizza 
+  steps:
+  - intent: order_pizza 
+  - action: pizza_form
+  - slot_was_set:
+    - topping: mushroom
+    - size: medium
+  - action: utter_confirm_pizza_order
+  - intent: deny 
+  - action: utter_goodbye
+
+- story: interactive_story_1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: order_pizza
+  - action: pizza_form
+  - active_loop: pizza_form
+  - slot_was_set:
+    - requested_slot: topping
+  - slot_was_set:
+    - topping: union
+  - slot_was_set:
+    - topping: union
+  - slot_was_set:
+    - requested_slot: size
+  - slot_was_set:
+    - size: medium
+  - slot_was_set:
+    - size: medium
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_confirm_pizza_order
+  - intent: affirm
+  - action: action_flush_slots
+  - action: utter_pizza_order
+  - action: utter_goodbye
+
+- story: interactive_story_2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: order_pizza
+  - action: pizza_form
+  - active_loop: pizza_form
+  - slot_was_set:
+    - requested_slot: topping
+  - slot_was_set:
+    - topping: mushroom
+  - slot_was_set:
+    - requested_slot: size
+  - slot_was_set:
+    - size: small
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_confirm_pizza_order
+  - intent: affirm
+  - action: action_flush_slots
+  - action: utter_pizza_order
+  - action: utter_goodbye
+
+- story: interactive_story_3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: order_pizza
+  - action: pizza_form
+  - active_loop: pizza_form
+  - slot_was_set:
+    - requested_slot: topping
+  - slot_was_set:
+    - topping: mushroom
+  - slot_was_set:
+    - topping: mushroom
+  - slot_was_set:
+    - requested_slot: size
+  - slot_was_set:
+    - size: large
+  - slot_was_set:
+    - size: large
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_confirm_pizza_order
+  - intent: affirm
+  - action: action_flush_slots
+  - slot_was_set:
+    - topping: null
+  - slot_was_set:
+    - size: null
+  - action: utter_pizza_order
+  - action: utter_goodbye

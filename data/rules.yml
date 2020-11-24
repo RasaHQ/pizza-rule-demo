@@ -1,0 +1,40 @@
+version: "2.0"
+
+rules:
+
+- rule: Say goodbye anytime the user says goodbye
+  conversation_start: true
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+- rule: Activate Form
+  steps:
+  - intent: order_pizza
+  - action: pizza_form
+  - active_loop: pizza_form
+
+- rule: Chitchat Recovery Form
+  condition:
+  - active_loop: pizza_form
+  steps:
+  - or: 
+    - intent: bot_challenge
+  - action: utter_iamabot
+  - action: pizza_form
+  - active_loop: pizza_form
+
+- rule: Submit Form
+  condition:
+  - active_loop: pizza_form
+  steps:
+  - action: pizza_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: utter_confirm_pizza_order

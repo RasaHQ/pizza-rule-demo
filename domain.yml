@@ -1,0 +1,73 @@
+version: '2.0'
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+intents:
+- greet
+- affirm
+- give_topping
+- give_size
+- order_pizza
+- goodbye
+- deny
+- mood_great
+- mood_unhappy
+- bot_challenge
+- check_topping
+- check_size
+entities:
+- size
+- topping
+slots:
+  requested_slot:
+    type: text
+    influence_conversation: false
+  size:
+    type: categorical
+    influence_conversation: true
+    values:
+    - small
+    - medium
+    - large
+    - __other__
+  topping:
+    type: text
+    influence_conversation: true
+responses:
+  utter_want_to_order:
+  - text: Would you like to order a pizza now?
+  utter_ask_topping:
+  - text: What toppings would you like?
+  utter_ask_size:
+  - text: What pizza size would you like?
+  utter_greet:
+  - text: Hey! How are you?
+  utter_cheer_up:
+  - text: 'Here is something to cheer you up:'
+    image: https://i.imgur.com/nGF1K8f.jpg
+  utter_did_that_help:
+  - text: Did that help you?
+  utter_happy:
+  - text: Great, carry on!
+  utter_goodbye:
+  - text: Bye
+  utter_iamabot:
+  - text: I am a bot, powered by Rasa.
+  utter_pizza_order:
+  - text: The {topping} pizza is underway! We hope you like it!
+  utter_confirm_pizza_order:
+  - text: This is but a simple demo. But I would order a {topping} pizza that's {size}. Do you confirm?
+actions:
+- action_flush_slots
+- utter_confirm_pizza_order
+- utter_goodbye
+- utter_greet
+- utter_pizza_order
+forms:
+  pizza_form:
+    topping:
+    - type: from_entity
+      entity: topping
+    size:
+    - type: from_entity
+      entity: size
